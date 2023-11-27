@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        // Define the 'app' variable at the pipeline level
+        app = null
+    }
+
     stages {
         stage('Clone repository') {
             steps {
@@ -11,7 +16,8 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                    def app = docker.build("krishdutta1177/test:${env.BUILD_NUMBER}")
+                    // Assign the 'app' variable at the pipeline level
+                    app = docker.build("krishdutta1177/test:${env.BUILD_NUMBER}")
                 }
             }
         }
@@ -19,6 +25,7 @@ pipeline {
         stage('Test image') {
             steps {
                 script {
+                    // Use the 'app' variable
                     app.inside {
                         sh 'echo "Tests passed"'
                     }
@@ -30,6 +37,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                        // Use the 'app' variable
                         app.push("${env.BUILD_NUMBER}")
                     }
                 }
@@ -40,7 +48,8 @@ pipeline {
             steps {
                 script {
                     echo "triggering updatemanifestjob"
-                    build job: 'updatemanifest2', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
+                    // Use the 'app' variable
+                    build job: 'updatemanifest', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
                 }
             }
         }

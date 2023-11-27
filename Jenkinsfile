@@ -40,7 +40,7 @@ pipeline {
             steps {
                 script {
                     echo "triggering updatemanifestjob"
-                    build job: 'updatemanifest', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
+                    build job: 'updatemanifest2', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
                 }
             }
         }

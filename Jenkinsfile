@@ -49,7 +49,7 @@ pipeline {
                 script {
                     echo "triggering updatemanifestjob"
                     // Use the 'app' variable
-                    build job: 'updatemanifest', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
+                    build job: 'updatemanifest2', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
                 }
             }
         }
